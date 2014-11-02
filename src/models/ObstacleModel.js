@@ -19,6 +19,8 @@ exports = Class(EntityModel, function(supr) {
     supr(this, 'reset', arguments);
     this.type = opts.type;
 
+    console.log(this.type.collides);
+
     this.hasHit = false;
 
     // update the collision rect
@@ -45,7 +47,7 @@ exports = Class(EntityModel, function(supr) {
 
     // TODO: check for collision
     var player = this.gameModel.player;
-    if (this.active && !this.hasHit && intersect.circleAndRect(player, this.rect) && this.collides) {
+    if (this.active && !this.hasHit && this.type.collides && intersect.circleAndRect(player, this.rect)) {
       this.hitPlayer(player);
     }
 
@@ -61,13 +63,14 @@ exports.TYPES = {
     stopsBullets
     spawnsOnSidewalk
     spawnsOnRoad
+    collides
   */
   pothole: { // stays in one place, bullets go over it
     image: IMAGES_DIR + 'pathole.png',
     width: 102,
     height: 100,
     killPlayer: true,
-    collides: true
+    collides: true,
   },
   bush: { //stays in one place, bullets hit it
     image: IMAGES_DIR + 'bush.png',
@@ -79,7 +82,7 @@ exports.TYPES = {
     collides: true
   },
   powerup: {
-    //image: IMAGES_DIR + 'calculator_mockup.png',
+    image: IMAGES_DIR + 'calculator_mockup.png',
     width: 52,
     height: 76,
     collides: true

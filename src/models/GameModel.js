@@ -131,7 +131,7 @@ exports = Class(GameModel, function(supr) {
     this.obstacleMVC.obtain({
       x: enemyX,
       y: enemyY,
-      type: obstacleType
+      type:obstacleType
     });
   }
 
