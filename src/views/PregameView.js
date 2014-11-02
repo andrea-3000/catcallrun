@@ -12,6 +12,7 @@ exports = Class(ScreenView, function(supr) {
     images: {
       s1t1: pgImgs + 'animOne text1.png',
       s1t2: pgImgs + 'animOne text2.png',
+      s1i1: pgImgs + 'animOne img1.png',
       s2t1: pgImgs + 'animTwo text1.png',
       s2t2: pgImgs + 'animTwo text2.png',
       s2t3: pgImgs + 'animTwo text3.png',
@@ -166,6 +167,16 @@ exports = Class(ScreenView, function(supr) {
       x: (s.width - img.s1t2.w) / 2,
       y: this.bottomY - img.s1t2.h - 20
     });
+
+    this.s1i1 = new ImageView({
+      superview: s1Container,
+      image: img.s1i1.path,
+      width: 400,
+      height: 550,
+      x: (s.width - 400) / 2,
+      y: 145
+
+    })
 
     // SECTION TWO
     var s2Container = new View({
