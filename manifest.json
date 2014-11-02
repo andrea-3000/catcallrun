@@ -1,0 +1,17 @@
+{
+  "appID": "9110cf924cf14effac832e237361cbed",
+  "dependencies": {
+    "devkit-core": "https://github.com/gameclosure/devkit-core#v2.0.9"
+  },
+  "shortName": "catcallrun",
+  "studio": {
+    "domain": "studio.example.com",
+    "name": "Your Studio Name",
+    "stagingDomain": "staging.example.com"
+  },
+  "supportedOrientations": [
+    "portrait",
+    "landscape"
+  ],
+  "title": "catcallrun"
+}
