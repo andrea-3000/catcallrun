@@ -21,6 +21,11 @@ exports = Class(GameModel, function(supr) {
 
   var POWERUP_LENGTH = 3;
 
+  var ENEMY_SPAWN_INTERVAL = 1.5;
+  var MIN_ENEMY_SPAWN_INTERVAL = 0.2;
+  var OBSTACLE_SPAWN_INTERVAL = 1;
+  var MIN_OBSTACLE_SPAWN_INTERVAL = 0.1;
+
   this.init = function(opts) {
     supr(this, 'init', [opts]);
     this.view = null;
@@ -80,13 +85,13 @@ exports = Class(GameModel, function(supr) {
     });
 
     this.enemySpawnTimer = new GameInterval({
-      tickInterval: 1.5,
+      tickInterval: ENEMY_SPAWN_INTERVAL,
       tickImmediately: true,
       tickFunction: function() { this.spawnEnemy(); }.bind(this)
     });
 
     this.obstacleSpawnTimer = new GameInterval({
-      tickInterval: 2,
+      tickInterval: OBSTACLE_SPAWN_INTERVAL,
       tickImmediately: true,
       tickFunction: function() { this.spawnObstacle(); }.bind(this)
     });
@@ -219,6 +224,11 @@ exports = Class(GameModel, function(supr) {
         this.poweredUp = false;
         this.powerupTimeRemaining -= dt;
       }
+
+      var TARG_TIME = 100;
+      this.enemySpawnTimer.tickInterval = Math.max((1 - this._elapsed / TARG_TIME) * ENEMY_SPAWN_INTERVAL, MIN_ENEMY_SPAWN_INTERVAL);
+      this.obstacleSpawnTimer.tickInterval = Math.max((1 - this._elapsed / TARG_TIME) * OBSTACLE_SPAWN_INTERVAL, MIN_OBSTACLE_SPAWN_INTERVAL);
+
       this.enemySpawnTimer.step(dt);
       this.obstacleSpawnTimer.step(dt);
     }
