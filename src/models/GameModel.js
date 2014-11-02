@@ -139,9 +139,13 @@ exports = Class(GameModel, function(supr) {
 
     var randoX;
     if (obstacleType === ObstacleModel.TYPES.pothole) {
-      randoX = rollFloat(this.modelSpace.x + 120, this.modelSpace.right - 120);
+      randoX = rollFloat(this.modelSpace.x + 130, this.modelSpace.right - 130);
     } else if (obstacleType === ObstacleModel.TYPES.bush){
-      console.log("math??");
+      if (random() < 0.5) {
+        randoX = rollFloat(this.modelSpace.x, this.modelSpace.x + 120);
+      } else {
+        randoX = rollFloat(this.modelSpace.right - 120, this.modelSpace.right);
+      }
     } else {
       randoX = rollFloat(this.modelSpace.x + 100, this.modelSpace.right - 100);
     }
@@ -181,7 +185,12 @@ exports = Class(GameModel, function(supr) {
   };
 
   this.hitObstacle = function(ObstacleModel) {
-    this._killPlayer();
+    if (this.bulletLevel > 0) {
+      this.bulletLevel--;
+      // TODO: make a particle explosion of these bullet types falling from player
+    } else {
+      this._killPlayer();
+    }
   };
 
   this.hitEnemy = function(enemyModel) {

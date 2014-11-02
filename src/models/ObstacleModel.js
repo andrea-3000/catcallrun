@@ -49,7 +49,7 @@ exports = Class(EntityModel, function(supr) {
       this.hitPlayer(player);
     }
 
-    if (this.y > this.gameModel.modelSpace.bottom) {
+    if (this.y - this.rect.height > this.gameModel.modelSpace.bottom) {
       this.active = false;
     }
   };
@@ -65,8 +65,8 @@ exports.TYPES = {
   */
   pothole: { // stays in one place, bullets go over it
     image: IMAGES_DIR + 'pathole.png',
-    width: 102,
-    height: 100,
+    width: 120,
+    height: 120,
     killPlayer: true,
     collides: true,
   },

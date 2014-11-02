@@ -1,8 +1,12 @@
 import ui.ImageView as ImageView;
 
+import gfw.lib.utils as utils;
+
 import src.models.ObstacleModel as ObstacleModel;
 
 exports = Class(ImageView, function(supr) {
+  var rollFloat = utils.rollFloat;
+
   this.init = function(opts) {
     supr(this, 'init', arguments);
     this.type = -1;
@@ -24,6 +28,11 @@ exports = Class(ImageView, function(supr) {
       anchorX: w / 2,
       anchorY: h / 2
     });
+
+    if (this.type == ObstacleModel.TYPES.pothole) {
+      var n = 0.5;
+      this.style.r = rollFloat(-n, n);
+    }
   }
 
   this.tick = function(dt) {
