@@ -5,8 +5,6 @@ import ui.ImageView as ImageView;
 import ui.View as View;
 import animate;
 
-
-
 exports = Class(ScreenView, function(supr) {
 
   var pgImgs = PREGAME_DIR;
@@ -31,7 +29,6 @@ exports = Class(ScreenView, function(supr) {
       s4i2: pgImgs + 'animFour pencil.png',
 
       buttonArrow: pgImgs + 'animTwo arrowRight.png'
-      
     }
   });
 
@@ -54,6 +51,10 @@ exports = Class(ScreenView, function(supr) {
     if (this.pageIndex < 3){
       this.pageIndex++;
       this.setVisibleSection(this.pageIndex);
+    }
+    // TODO: this is a bit of a hack to make sure that things are working with screen transitions
+    else {
+      controller.transitionToGame();
     }
   };
 
@@ -102,7 +103,6 @@ exports = Class(ScreenView, function(supr) {
       height: img.buttonArrow.h
     });
 
-
     // SECTION ONE
     var s1Container = new View({
       superview: this,
@@ -130,8 +130,6 @@ exports = Class(ScreenView, function(supr) {
       x: (s.width - img.s1t2.w) / 2,
       y: this.bottomY - img.s1t2.h - 20
     });
-
-
 
     // SECTION TWO
     var s2Container = new View({
@@ -230,8 +228,6 @@ exports = Class(ScreenView, function(supr) {
       x: rightGirlX,
       y: girlY
     });
-
-    
 
     // SECTION THREE
     var s3Container = new View({
@@ -347,7 +343,6 @@ exports = Class(ScreenView, function(supr) {
       }
     }
   };
- 
 
   this.resetView = function() {};
 
