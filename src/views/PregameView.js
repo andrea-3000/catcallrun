@@ -28,7 +28,9 @@ exports = Class(ScreenView, function(supr) {
       s4i1: pgImgs + 'animFour calculator.png',
       s4i2: pgImgs + 'animFour pencil.png',
 
-      buttonArrow: pgImgs + 'animTwo arrowRight.png'
+      buttonArrow: pgImgs + 'animTwo arrowRight.png',
+      startButton: pgImgs + 'startButton.png',
+      skipButton: pgImgs + 'skipButton.png'
     }
   });
 
@@ -44,6 +46,9 @@ exports = Class(ScreenView, function(supr) {
     if (this.pageIndex >= 1){
       this.pageIndex--;
       this.setVisibleSection(this.pageIndex);
+    } 
+    else {
+      controller.transitionToGame();
     }
   };
 
@@ -52,7 +57,6 @@ exports = Class(ScreenView, function(supr) {
       this.pageIndex++;
       this.setVisibleSection(this.pageIndex);
     }
-    // TODO: this is a bit of a hack to make sure that things are working with screen transitions
     else {
       controller.transitionToGame();
     }
@@ -69,6 +73,19 @@ exports = Class(ScreenView, function(supr) {
       var currentSectionView = this.sections[sectionIndex];
       animate(currentSectionView).now({opacity: 1}, 250);
     }
+    if (sectionIndex == 1){
+      animate(this.s2i3).now({scaleX:0,scaleY: 0}, 0).wait(250).then({scaleX:1,scaleY: 1}, 1500, animate.easeOutElastic);
+      animate(this.s2i4).now({scaleX:0,scaleY: 0}, 0).wait(1600).then({scaleX:1,scaleY: 1}, 1500, animate.easeOutElastic);
+    }
+    if (sectionIndex == 3){
+      animate(this.s4i1).now({opacity:0}, 0).wait(250).then({opacity:1}, 1500);
+      animate(this.s4i2).now({opacity:0}, 0).wait(1600).then({opacity:1}, 1500);
+    }
+    this.rightButton.style.visible = sectionIndex < 3;
+    this.startButton.style.visible = sectionIndex == 3;
+
+    this.leftButton.style.visible = sectionIndex > 0;
+    this.skipButton.style.visible = sectionIndex == 0;
   }
 
   this.designView = function() {
@@ -94,6 +111,16 @@ exports = Class(ScreenView, function(supr) {
       width: img.buttonArrow.w,
       height: img.buttonArrow.h
     });
+
+    this.skipButton = new ImageView({
+      superview: this,
+      image: img.skipButton.path,
+      x: 20,
+      y: arrowY,
+      width: img.skipButton.w,
+      height: img.skipButton.h
+    });
+
     this.rightButton = new ImageView({
       superview: this,
       image: img.buttonArrow.path,
@@ -102,6 +129,15 @@ exports = Class(ScreenView, function(supr) {
       width: img.buttonArrow.w,
       height: img.buttonArrow.h
     });
+
+    this.startButton = new ImageView({
+      superview: this,
+      image: img.startButton.path,
+      x: (s.width - (img.startButton.w * 2)) - 20,
+      y: arrowY - 30,
+      width: img.startButton.w *2,
+      height: img.startButton.h *2
+    })
 
     // SECTION ONE
     var s1Container = new View({
@@ -192,6 +228,8 @@ exports = Class(ScreenView, function(supr) {
       height: img.s2i2.h/3,
       offsetX: -img.s2i2.hw/3,
       offsetY: -img.s2i2.hh/3, 
+      anchorX: img.s2i2.hw/3,
+      anchorY: img.s2i2.hw/3,
       x: leftGirlX,
       y: girlY
     });
@@ -203,6 +241,8 @@ exports = Class(ScreenView, function(supr) {
       height: img.s2i2.h,
       offsetX: -img.s2i2.hw,
       offsetY: -img.s2i2.hh, 
+      anchorX: img.s2i2.hw,
+      anchorY: img.s2i2.hh,
       x: rightGirlX,
       y: girlY
     });
