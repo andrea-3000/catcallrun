@@ -1,6 +1,7 @@
 
 import gfw.models.entity.EntityModel as EntityModel;
 import math.geom.intersect as intersect;
+import src.models.ObstacleModel as ObstacleModel;
 
 exports = Class(EntityModel, function(supr) {
 
@@ -32,6 +33,15 @@ exports = Class(EntityModel, function(supr) {
       if (this.active && !this.hasHit && intersect.circleAndCircle(this, model)) {
         this.hitEnemy(model);
       }
+    }.bind(this));
+
+    this.gameModel.obstacleMVC.modelPool.forEachActive(function(model) {
+      if(model.type.stopsBullets) {
+        if (this.active && !this.hasHit && intersect.circleAndCircle(this, model)) {
+          this.active = false;
+        }
+      }
+      
     }.bind(this));
 
     if (this.y < this.gameModel.modelSpace.y) {

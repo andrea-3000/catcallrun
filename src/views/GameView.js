@@ -33,9 +33,13 @@ exports = Class(GameView, function(supr) {
   var gImgs = IMAGES_DIR;
   var img = new ImageStats({
     images: {
-      bg: gImgs + 'bg.png',
+      bg: gImgs + 'street.png',
       awning: gImgs + 'awning.png',
-      player: gImgs + 'kitten_karateRun_0001.png'
+      player: gImgs + 'girl_run_0000.png',
+      pencil: gImgs + 'pencil_mockup_0000.png',
+      whiteBusiness: gImgs + 'business_mockup.png',
+      obstacle_1: gImgs + 'pathole.png',
+      obstacle_2: gImgs + 'bush.png'
     }
   });
 
@@ -50,6 +54,7 @@ exports = Class(GameView, function(supr) {
 
     // Get a reference to the game model
     gameModel = controller.gameModel;
+    controller.imageInfo = img;
 
     // TODO: this should probably be moved to the gameModel
     this.currentParallaxSpeed = DEFAULT_PARALLAX_SPEED;
@@ -103,13 +108,13 @@ exports = Class(GameView, function(supr) {
         ctor: ImageView,
         initOpts: {
           superview: this,
-          backgroundColor: 'red',
-          width: 60,
-          height: 60,
-          offsetX: -60,
-          offsetY: -60,
-          anchorX: 30,
-          anchorY: 30
+          image: img.whiteBusiness.path,
+          width: img.whiteBusiness.w,
+          height: img.whiteBusiness.h,
+          offsetX: -img.whiteBusiness.hw,
+          offsetY: -img.whiteBusiness.hh,
+          anchorX: img.whiteBusiness.hw,
+          anchorY: img.whiteBusiness.hh
         }
       },
       initCount: 10,
@@ -123,36 +128,27 @@ exports = Class(GameView, function(supr) {
       }
     });
 
-    var obstacleW = 100;
-    var obstacleH = 40;
+
     this.obstacleMVC = new MVController({
       modelPoolOpts: {
         ctor: ObstacleModel,
         initOpts: {
           gameModel: gameModel,
           radius: 20,
-          width: obstacleW,
-          height: obstacleH
         }
       },
       viewPoolOpts: {
         ctor: ObstacleView,
         initOpts: {
           superview: this,
-          backgroundColor: 'blue',
-          width: obstacleW,
-          height: obstacleH,
-          offsetX: -obstacleW / 2,
-          offsetY: -obstacleH / 2,
-          anchorX: obstacleW / 2,
-          anchorY: obstacleH / 2
         }
       },
       initCount: 10,
       linkedFunc: function(model, view) {
         model.view = view;
-        view.type = model.type;
-        view.reset();
+        view.reset({
+          type: model.type
+        });
       },
       updateViewFunc: function(dt, model, view) {
         var style = view.style;
@@ -173,13 +169,13 @@ exports = Class(GameView, function(supr) {
         ctor: ImageView,
         initOpts: {
           superview: this,
-          backgroundColor: 'green',
-          width: 20,
-          height: 20,
-          offsetX: -10,
-          offsetY: -10,
-          anchorX: 10,
-          anchorY: 10
+          image: img.pencil.path,
+          width: img.pencil.w,
+          height: img.pencil.h,
+          offsetX: -img.pencil.hw,
+          offsetY: -img.pencil.hh,
+          anchorX: img.pencil.hw,
+          anchorY: img.pencil.hh
         }
       },
       initCount: 40,
@@ -195,14 +191,14 @@ exports = Class(GameView, function(supr) {
 
     this.playerView = new SpriteView({
       superview: this,
-      url: gImgs + 'kitten',
+      url: gImgs + 'girl',
       width: img.player.w,
       height: img.player.h,
       offsetX: -img.player.hw + playerGraphicOffsetX,
       offsetY: -img.player.h + playerGraphicOffsetY,
       anchorX: img.player.hw + playerGraphicOffsetX,
       anchorY: img.player.h + playerGraphicOffsetY,
-      frameRate: 12
+      frameRate: 9
     });
 
     this.pEngine = new ParticleEngine({
@@ -293,7 +289,7 @@ exports = Class(GameView, function(supr) {
 
     this.scoreTextView.setText('0');
 
-    this.playerView.startAnimation('karateRun', {
+    this.playerView.startAnimation('run', {
       loop: true
     });
     // TODO: this is to fix a bug where startAnimation does not unpause

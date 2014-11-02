@@ -13,7 +13,6 @@ exports = Class(EntityModel, function(supr) {
     this.type = opts.type;
 
     this.hasHit = false;
-    this.rect = new Rect(0, 0, opts.width, opts.height);
   };
 
   this.reset = function(opts) {
@@ -24,12 +23,13 @@ exports = Class(EntityModel, function(supr) {
 
     // update the collision rect
     // since the view is centered on bottom center, we will also center on that
-    this.rect.x = this.x - this.rect.width / 2;
+    this.rect = new Rect(0, 0, this.type.width, this.type.height);
+    this.rect.x = this.x - this.type.width / 2;
   };
 
   this.hitPlayer = function(model) {
     this.hasHit = true;
-    if (this.type === exports.TYPES.POWERUP) {
+    if (this.type === exports.TYPES.powerup) {
       this.gameModel.collectPowerup(this);
     } else {
       this.gameModel.hitObstacle(this);
@@ -56,6 +56,29 @@ exports = Class(EntityModel, function(supr) {
 });
 
 exports.TYPES = {
-  STATIC_FLAT: 1, // stays in one place, bullets go over it
-  POWERUP: 10
+  /* 
+    killPlayer
+    stopsBullets
+    spawnsOnSidewalk
+    spawnsOnRoad
+  */
+  pothole: { // stays in one place, bullets go over it
+    image: IMAGES_DIR + 'pathole.png',
+    width: 102,
+    height: 100,
+    killPlayer: true
+  },
+  bush: { //stays in one place, bullets hit it
+    image: IMAGES_DIR + 'bush.png',
+    width: 73,
+    height: 63,
+    killPlayer: true,
+    stopsBullets: true,
+    spawnsOnSidewalk: true,
+  },
+  powerup: {
+    width: 60,
+    height: 60,
+    spawnsOnSidewalk: true
+  }
 };

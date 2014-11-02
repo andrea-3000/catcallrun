@@ -113,9 +113,12 @@ exports = Class(GameModel, function(supr) {
   };
 
   this.spawnObstacle = function() {
-    var obstacleType = random() < 0.9 ?
-        ObstacleModel.TYPES.STATIC_FLAT :
-        ObstacleModel.TYPES.POWERUP;
+    var obstacleType = ObstacleModel.TYPES.powerup;
+    if (random() < 0.9) {
+      obstacleType = random() < 0.5 ?
+        ObstacleModel.TYPES.pothole :
+        ObstacleModel.TYPES.bush;
+    } 
     this.obstacleMVC.obtain({
       x: rollFloat(this.modelSpace.x + 100, this.modelSpace.right - 100),
       y: this.modelSpace.y - 60,
