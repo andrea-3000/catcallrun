@@ -14,7 +14,8 @@ exports = Class(ScreenView, function(supr) {
       s1t2: pgImgs + 'animOne text2.png',
       s1i1: pgImgs + 'animOne img1.png',
       s2t1: pgImgs + 'animTwo text1.png',
-      s2t2: pgImgs + 'animTwo text2.png',
+      s2t21: pgImgs + 'animTwo text2.1.png',
+      s2t22: pgImgs + 'animTwo text2.2.png',
       s2t3: pgImgs + 'animTwo text3.png',
       s2t4: pgImgs + 'animTwo text4.png',
       s2i1: pgImgs + 'animTwo img1.png',
@@ -79,8 +80,24 @@ exports = Class(ScreenView, function(supr) {
       animate(this.s2i4).now({scaleX:0,scaleY: 0}, 0).wait(1600).then({scaleX:1,scaleY: 1}, 1500, animate.easeOutElastic);
     }
     if (sectionIndex == 3){
-      animate(this.s4i1).now({opacity:0}, 0).wait(250).then({opacity:1}, 1500);
-      animate(this.s4i2).now({opacity:0}, 0).wait(1600).then({opacity:1}, 1500);
+      animate(this.s4i1).now({
+          x: -100,
+          r: -1
+        }, 0)
+        .wait(250)
+        .then({
+          x: this.style.width / 2 + 15,
+          r: 0.6
+        }, 1500, animate.easeOutElastic);
+      animate(this.s4i2).now({
+          x: this.style.width + 100,
+          r: 1
+        }, 0)
+        .wait(250)
+        .then({
+          x: this.style.width / 2 - 15,
+          r: -0.6
+        }, 1500, animate.easeOutElastic);
     }
     this.rightButton.style.visible = sectionIndex < 3;
     this.startButton.style.visible = sectionIndex == 3;
@@ -197,16 +214,25 @@ exports = Class(ScreenView, function(supr) {
       y: 20
     });
 
-    this.s2t2 = new ImageView({
+    this.s2t21 = new ImageView({
       superview: s2Container,
-      image: img.s2t2.path,
-      width: img.s2t2.w,
-      height: img.s2t2.h,
-      x: (s.width - img.s2t2.w) / 2,
-      y: this.bottomY - img.s2t2.h - 20
+      image: img.s2t21.path,
+      width: img.s2t21.w,
+      height: img.s2t21.h,
+      x: (s.width - img.s2t21.w) / 2,
+      y: 135
     });
 
-    var girlY = 350;
+    this.s2t22 = new ImageView({
+      superview: s2Container,
+      image: img.s2t22.path,
+      width: img.s2t22.w,
+      height: img.s2t22.h,
+      x: (s.width - img.s2t22.w) / 2,
+      y: this.bottomY - img.s2t22.h - 20
+    });
+
+    var girlY = s.height / 2;
     var leftGirlX = s.width * .27 - 30;
     var rightGirlX = s.width * .72 - 30;
 
@@ -269,7 +295,18 @@ exports = Class(ScreenView, function(supr) {
       y: girlY
     });
 
-    this.s2i2 = new ImageView({
+    this.s2i21 = new ImageView({
+      superview: s2Container,
+      image: img.s2i1.path,
+      width: img.s2i1.w,
+      height: img.s2i1.h,
+      offsetX: -img.s2i1.hw,
+      offsetY: -img.s2i1.hh, 
+      x: rightGirlX,
+      y: girlY
+    });
+
+    this.s2i22 = new ImageView({
       superview: s2Container,
       image: img.s2i1.path,
       width: img.s2i1.w,
@@ -299,7 +336,7 @@ exports = Class(ScreenView, function(supr) {
       y: 30
     });
 
-     this.s3i1 = new ImageView({
+     this.s3i2 = new ImageView({
       superview: s3Container,
       image: img.s3i1.path,
       width: img.s3i1.w,
@@ -314,7 +351,7 @@ exports = Class(ScreenView, function(supr) {
       width: img.s3t2.w,
       height: img.s3t2.h,
       x: (s.width - img.s3t2.w) / 2,
-      y: (s.height + 30) * .43
+      y: 400
     });
 
     this.s3t3 = new ImageView({
@@ -323,7 +360,7 @@ exports = Class(ScreenView, function(supr) {
       width: img.s3t3.w,
       height: img.s3t3.h,
       x: (s.width - img.s3t3.w) / 2,
-      y: (s.height + 30) * .76
+      y: this.bottomY - img.s3t3.h - 30
     });
 
     //SECTION FOUR
@@ -369,16 +406,16 @@ exports = Class(ScreenView, function(supr) {
       width: img.s4i2.w,
       height: img.s4i2.h,
       x: (s.width - img.s4i2.w) / 2,
-      y: (s.height + 30) * .55
+      y: 225
     });
 
     this.s4t3 = new ImageView({
-      superview: s4Container,
+      superview: s4Container,   
       image: img.s4t3.path,
       width: img.s4t3.w,
       height: img.s4t3.h,
       x: (s.width - img.s4t3.w) / 2,
-      y: (s.height + 30) * .76
+      y: this.bottomY - img.s4t3.h - 30
     });
 
     this.setVisibleSection(0);

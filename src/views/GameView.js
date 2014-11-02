@@ -161,7 +161,7 @@ exports = Class(GameView, function(supr) {
         ctor: BulletModel,
         initOpts: {
           gameModel: gameModel,
-          radius: 10
+          radius: 20
         }
       },
       viewPoolOpts: {
@@ -448,7 +448,7 @@ exports = Class(GameView, function(supr) {
       gameModel.step(dtSec);
 
       if (gameModel.gameOver) {
-        this.currentParallaxSpeed *= 0.9;
+        this.currentParallaxSpeed *= 0.94;
       }
       var parallaxVerticalDist = this.currentParallaxSpeed * dt;
       this.backgroundView.scrollBy(0, parallaxVerticalDist);

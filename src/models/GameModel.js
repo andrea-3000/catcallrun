@@ -61,7 +61,7 @@ exports = Class(GameModel, function(supr) {
     this.modelSpace.right = this.modelSpace.x + this.modelSpace.width;
     this.modelSpace.bottom = this.modelSpace.y + this.modelSpace.height;
 
-    this.bulletLevel = 1;
+    this.bulletLevel = 0;
 
     // SIMPLE RESETS //
     this.gameOver = false;
