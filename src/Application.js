@@ -59,7 +59,8 @@ exports = Class(USE_WEEBY ? weeby.Application : GC.Application, function(supr) {
       this._gameLoaded = true;
 
       c.setRootView(this.getRootView());
-      c.transitionToGame();
+      c.transitionToMenu(); 
+      //c.transitionToGame();
     } else {
       var gameView = c.screenViews['GameView'];
       gameView.resetView();

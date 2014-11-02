@@ -38,6 +38,7 @@ exports = Class(GameView, function(supr) {
       awning: gImgs + 'awning.png',
       player: gImgs + 'girl_run_0000.png',
       whiteBusiness: gImgs + 'business_mockup.png',
+
     }
   });
 
