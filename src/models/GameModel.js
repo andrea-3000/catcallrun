@@ -164,6 +164,7 @@ exports = Class(GameModel, function(supr) {
       y: enemyY,
       type:obstacleType
     });
+    this.view.onEducated(enemyX, enemyY);
   }
 
   this.collectPowerup = function(powerupModel) {
@@ -185,9 +186,9 @@ exports = Class(GameModel, function(supr) {
   };
 
   this.hitObstacle = function(ObstacleModel) {
+    this.view.onDropBulletLevel(this.bulletLevel, this.player.x, this.player.y);
     if (this.bulletLevel > 0) {
       this.bulletLevel--;
-      // TODO: make a particle explosion of these bullet types falling from player
     } else {
       this._killPlayer();
     }

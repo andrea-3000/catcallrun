@@ -293,11 +293,6 @@ exports = Class(GameView, function(supr) {
 
   this.onBulletDestroyed = function(type, x, y) {
     if(type === BulletModel.TYPES.pencil) {
-      this.particleExplo('particle', x, y);
-    }
-  };
-
-  this.particleExplo = function(urlName, x, y) {
       var size = 10;
       var h = 13;
       var halfSize = 5;
@@ -307,7 +302,7 @@ exports = Class(GameView, function(supr) {
       var data = this.pEngineAir.obtainParticleArray(count);
       for (var i = 0; i < count; ++i) {
         var pObj = data[i];
-        pObj.image = gImgs + urlName + '.png';
+        pObj.image = gImgs + 'particle.png';
         pObj.x = x;
         pObj.y = y;
         pObj.width = halfSize;
@@ -332,7 +327,79 @@ exports = Class(GameView, function(supr) {
         //pObj.compositeOperation = 'lighter';
       }
       this.pEngineAir.emitParticles(data);
-    };
+    }
+  };
+
+  this.onEducated = function(x, y) {
+    var size = 16;
+    var halfSize = 8;
+    var vMin = 20;
+    var vMax = 65;
+    var count = 8;
+    var data = this.pEngineAir.obtainParticleArray(count);
+    for (var i = 0; i < count; ++i) {
+      var pObj = data[i];
+      pObj.image = gImgs + 'cloud.png';
+      pObj.x = x + rollFloat(-15, 15);
+      pObj.y = y + rollFloat(10, 25);
+      pObj.width = size;
+      pObj.height = size;
+      pObj.offsetX = -halfSize;
+      pObj.offsetY = -halfSize;
+      pObj.anchorX = halfSize;
+      pObj.anchorY = halfSize;
+      pObj.scale = rollFloat(2, 3);
+
+      pObj.dx = rollFloat(-vMax, vMax);
+      pObj.ddx = vMax;
+      pObj.dy = rollFloat(400, 600);
+      pObj.r = rollFloat(0.075, 0.2);
+      pObj.dr = rollFloat(-6, 6);
+
+      pObj.ttl = 600;
+      pObj.opacity = 0.9;
+      pObj.dopacity = -0.5;
+      pObj.compositeOperation = 'lighter';
+    }
+    this.pEngineAir.emitParticles(data);
+  };
+
+  this.onDropBulletLevel = function(bulletLevel, x, y) {
+    var btype = BulletModel.LEVEL_TYPES[bulletLevel];
+    var w = btype.width;
+    var h = btype.height;
+    var hw = w / 2;
+    var hh = h / 2;
+    var vMin = 20;
+    var vMax = 65;
+    var count = 8;
+    var bulletImgPath = btype.image;
+    var data = this.pEngineAir.obtainParticleArray(count);
+    for (var i = 0; i < count; ++i) {
+      var pObj = data[i];
+      pObj.image = bulletImgPath;
+      pObj.x = x + rollFloat(-15, 15);
+      pObj.y = y + rollFloat(10, 25);
+      pObj.width = w;
+      pObj.height = h;
+      pObj.offsetX = -hw;
+      pObj.offsetY = -hh;
+      pObj.anchorX = hw;
+      pObj.anchorY = hh;
+      pObj.scale = rollFloat(1, 2);
+
+      pObj.dx = rollFloat(-vMax, vMax);
+      pObj.dy = -rollFloat(200, 400);
+      pObj.ddy = rollFloat(400, 800);
+      pObj.r = rollFloat(0.075, 0.2);
+      pObj.dr = rollFloat(-6, 6);
+
+      pObj.ttl = 1200;
+      pObj.opacity = 0.9;
+      pObj.dopacity = -0.5;
+    }
+    this.pEngineAir.emitParticles(data);
+  };
 
   this.onInputStart = function(evt, point) {
 
