@@ -38,7 +38,6 @@ exports = Class(GameView, function(supr) {
       player: gImgs + 'girl_run_0000.png',
       pencil: gImgs + 'pencil_mockup_0000.png',
       whiteBusiness: gImgs + 'business_mockup.png',
-      businessFlash: gImgs + 'business_flash.png',
       obstacle_1: gImgs + 'pathole.png',
       obstacle_2: gImgs + 'bush.png'
     }

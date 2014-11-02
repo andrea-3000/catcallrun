@@ -88,8 +88,8 @@ exports.TYPES = {
     collides: true
   },
   enlightened: {
-    image: IMAGES_DIR + 'business_flash.png',
+    image: IMAGES_DIR + 'enlightened_mockup.png',
     width: 102,
-    height: 107
+    height: 123
   }
 };
