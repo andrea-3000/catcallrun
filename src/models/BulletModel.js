@@ -2,6 +2,7 @@
 import gfw.models.entity.EntityModel as EntityModel;
 import math.geom.intersect as intersect;
 import src.models.ObstacleModel as ObstacleModel;
+import src.views.GameView as GameView;
 
 exports = Class(EntityModel, function(supr) {
 
@@ -24,7 +25,7 @@ exports = Class(EntityModel, function(supr) {
 
   this.hitEnemy = function(enemyModel, amount) {
     this.hasHit = true;
-    this.active = false;
+    this.gameModel.bulletDestroyed(this);
     enemyModel.hurt(amount);
   };
 
@@ -41,7 +42,8 @@ exports = Class(EntityModel, function(supr) {
     this.gameModel.obstacleMVC.modelPool.forEachActive(function(model) {
       if(model.type.stopsBullets) {
         if (this.active && !this.hasHit && intersect.circleAndCircle(this, model)) {
-          this.active = false;
+          this.gameModel.bulletDestroyed(this);
+
         }
       }
     }.bind(this));

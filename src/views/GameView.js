@@ -128,7 +128,6 @@ exports = Class(GameView, function(supr) {
       }
     });
 
-
     this.obstacleMVC = new MVController({
       modelPoolOpts: {
         ctor: ObstacleModel,
@@ -197,7 +196,7 @@ exports = Class(GameView, function(supr) {
       frameRate: 9
     });
 
-    this.pEngine = new ParticleEngine({
+    this.pEngineAir = new ParticleEngine({
       parent: this,
       x: 0,
       y: 0,
@@ -269,7 +268,7 @@ exports = Class(GameView, function(supr) {
   };
 
   this.resetView = function() {
-    // this.pEngineAir.killAllParticles();
+    this.pEngineAir.killAllParticles();
     this.enemyMVC.releaseAll();
     this.bulletMVC.releaseAll();
     this.obstacleMVC.releaseAll();
@@ -292,41 +291,50 @@ exports = Class(GameView, function(supr) {
     this.playerView.resume();
   };
 
-  this.onInputStart = function(evt, point) {
-    /*if (gameModel.playerJump()) {
+  this.onBulletDestroyed = function(type, x, y) {
+    if(type === BulletModel.TYPES.pencil) {
+      this.particleExplo('particle', x, y);
+    }
+  };
+
+  this.particleExplo = function(urlName, x, y) {
       var size = 10;
+      var h = 13;
       var halfSize = 5;
-      var vMin = 60;
-      var vMax = 100;
-      var count = 20;
+      var vMin = 20;
+      var vMax = 65;
+      var count = 5;
       var data = this.pEngineAir.obtainParticleArray(count);
       for (var i = 0; i < count; ++i) {
         var pObj = data[i];
-        pObj.image = gImgs + 'particle.png';
-        pObj.x = gameModel.player.x;
-        pObj.y = gameModel.player.y;
-        pObj.width = size;
-        pObj.height = size;
+        pObj.image = gImgs + urlName + '.png';
+        pObj.x = x;
+        pObj.y = y;
+        pObj.width = halfSize;
+        pObj.height = h;
         pObj.offsetX = -halfSize;
         pObj.offsetY = -halfSize;
         pObj.anchorX = halfSize;
         pObj.anchorY = halfSize;
         pObj.scale = 2;
 
-        pObj.dx = rollFloat(-vMax, vMin);
-        pObj.ddx = -vMax;
+        var dirMult = random() < 0.5 ? -1 : 1;
+
+        pObj.dx = rollFloat(vMin, vMax) * dirMult;
+        pObj.ddx = vMax * dirMult;
         pObj.dy = rollFloat(vMin, vMax);
         pObj.ddy = vMax;
-        pObj.r = rollFloat(0, 6);
-        pObj,dr = rollFloat(-vMin, vMin);
+        pObj.r = rollFloat(0.075, 0.2) * dirMult;
 
-        pObj.ttl = 1000;
-        pObj.opacity = 0.9;
-        pObj.dopacity = -0.9;
-        pObj.compositeOperation = 'lighter';
+        pObj.ttl = 600;
+        pObj.opacity = 0.75;
+        pObj.dopacity = -0.5;
+        //pObj.compositeOperation = 'lighter';
       }
       this.pEngineAir.emitParticles(data);
-    }*/
+    };
+
+  this.onInputStart = function(evt, point) {
 
     if (gameModel.gameOver) {
       this.restartGame();
@@ -397,7 +405,7 @@ exports = Class(GameView, function(supr) {
       playerStyle.y = gameModel.player.y;
 
       // Update particles //
-      // this.pEngine.runTick(dt);
+      this.pEngineAir.runTick(dt);
 
       if (gameModel.redrawScore) {
         gameModel.redrawScore = false;

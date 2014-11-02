@@ -74,11 +74,6 @@ exports = Class(GameModel, function(supr) {
       y: this.playerSpawnY,
     });
 
-    this.bulletStepTimer = new GameInterval({ 
-      tickInterval: 1,
-      tickFunction: function() {this.bulletLevel = 0;}.bind(this)
-    });
-
     this.enemySpawnTimer = new GameInterval({
       tickInterval: 1.5,
       tickImmediately: true,
@@ -105,6 +100,11 @@ exports = Class(GameModel, function(supr) {
       dy: -600,
       type: bulletType
     });
+  };
+
+  this.bulletDestroyed = function(bulletModel) {
+    this.view.onBulletDestroyed(bulletModel.type, bulletModel.x, bulletModel.y);
+    bulletModel.active = false;  
   };
 
   this.movePlayerTo = function(x) {
@@ -201,7 +201,6 @@ exports = Class(GameModel, function(supr) {
       if (this.poweredUp) {
         console.log("powered up is true");
         this.poweredUp = false;
-        this.bulletStepTimer.step(dt);
       }
       this.enemySpawnTimer.step(dt);
       this.obstacleSpawnTimer.step(dt);

@@ -14,7 +14,8 @@ exports = Class(Controller, function(supr) {
 
 	this.transitionToMenu = function() {
 		// Transition to the main menu here if you have one
-		this.transitionToScreen("PregameView", PregameView);
+		//this.transitionToScreen("PregameView", PregameView);
+		this.transitionToGame();
 	};
 
 	this.transitionToGame = function() {
