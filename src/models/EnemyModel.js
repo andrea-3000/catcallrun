@@ -7,11 +7,14 @@ exports = Class(EntityLivingModel, function(supr) {
   this.init = function(opts) {
     supr(this, 'init', arguments);
     this.gameModel = opts.gameModel;
-    this.radius = opts.radius
+    this.radius = opts.radius;
+    this.maxHealth = opts.maxHealth;
+    this.health = this.maxHealth;
   };
 
   this.reset = function(opts) {
     supr(this, 'reset', arguments);
+    this.health = this.maxHealth;
     this.hasHit = false;
   };
 
@@ -19,6 +22,12 @@ exports = Class(EntityLivingModel, function(supr) {
     this.hasHit = true;
     this.gameModel.hitEnemy(this);
   };
+
+  this.die = function() {
+    supr(this, 'die', arguments);
+    this.gameModel.killEnemy(this);
+    this.gameModel.spawnEnlightened(this.x, this.y);
+  }
 
   this.step = function(dt) {
     supr(this, 'step', arguments);

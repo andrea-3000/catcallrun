@@ -10,7 +10,7 @@ exports = Class(EntityModel, function(supr) {
     this.gameModel = opts.gameModel;
     this.radius = opts.radius;
 
-    this.hasHit = false;
+    //this.hasHit = false;
   };
 
   this.reset = function(opts) {
@@ -22,7 +22,7 @@ exports = Class(EntityModel, function(supr) {
   this.hitEnemy = function(enemyModel) {
     this.hasHit = true;
     this.active = false;
-    this.gameModel.killEnemy(enemyModel);
+    enemyModel.hurt(1);
   };
 
   this.step = function(dt) {

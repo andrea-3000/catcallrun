@@ -126,6 +126,15 @@ exports = Class(GameModel, function(supr) {
     });
   };
 
+  this.spawnEnlightened = function(enemyX, enemyY) {
+    var obstacleType = ObstacleModel.TYPES.enlightened;
+    this.obstacleMVC.obtain({
+      x: enemyX,
+      y: enemyY,
+      type: obstacleType
+    });
+  }
+
   this.collectPowerup = function(powerupModel) {
     powerupModel.active = false;
     // Do something with that powerup
@@ -135,6 +144,7 @@ exports = Class(GameModel, function(supr) {
   this.killEnemy = function(enemyModel) {
     enemyModel.active = false;
     this.addScore(1);
+    // add caap and gown
   };
 
   this.hitObstacle = function(obstacleModel) {

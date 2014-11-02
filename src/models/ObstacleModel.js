@@ -45,7 +45,7 @@ exports = Class(EntityModel, function(supr) {
 
     // TODO: check for collision
     var player = this.gameModel.player;
-    if (this.active && !this.hasHit && intersect.circleAndRect(player, this.rect)) {
+    if (this.active && !this.hasHit && intersect.circleAndRect(player, this.rect) && this.collides) {
       this.hitPlayer(player);
     }
 
@@ -66,7 +66,8 @@ exports.TYPES = {
     image: IMAGES_DIR + 'pathole.png',
     width: 102,
     height: 100,
-    killPlayer: true
+    killPlayer: true,
+    collides: true
   },
   bush: { //stays in one place, bullets hit it
     image: IMAGES_DIR + 'bush.png',
@@ -75,10 +76,17 @@ exports.TYPES = {
     killPlayer: true,
     stopsBullets: true,
     spawnsOnSidewalk: true,
+    collides: true
   },
   powerup: {
-    width: 60,
-    height: 60,
-    spawnsOnSidewalk: true
+    //image: IMAGES_DIR + 'calculator_mockup.png',
+    width: 52,
+    height: 76,
+    collides: true
+  },
+  enlightened: {
+    image: IMAGES_DIR + 'business_flash.png',
+    width: 102,
+    height: 107
   }
 };
