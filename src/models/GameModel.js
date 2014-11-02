@@ -7,6 +7,7 @@ import gfw.controller.GameInterval as GameInterval;
 
 import src.models.PlayerModel as PlayerModel;
 import src.models.ObstacleModel as ObstacleModel;
+import src.models.BulletModel as BulletModel;
 
 exports = Class(GameModel, function(supr) {
   // Constants and references //
@@ -33,6 +34,8 @@ exports = Class(GameModel, function(supr) {
     this.playerSpawnX = 100;
     this.playerSpawnY = 100;
     this.targetPlayerX = this.playerSpawnX;
+
+    this.bulletLevel = 0;
   };
 
   this.addScore = function(amount) {
@@ -55,6 +58,8 @@ exports = Class(GameModel, function(supr) {
     this.modelSpace.right = this.modelSpace.x + this.modelSpace.width;
     this.modelSpace.bottom = this.modelSpace.y + this.modelSpace.height;
 
+    this.bulletLevel = 0;
+
     // SIMPLE RESETS //
     this.gameOver = false;
     this.score = 0;
@@ -67,6 +72,11 @@ exports = Class(GameModel, function(supr) {
     this.player.reset({
       x: this.playerSpawnX,
       y: this.playerSpawnY,
+    });
+
+    this.bulletStepTimer = new GameInterval({ 
+      tickInterval: 1,
+      tickFunction: function() {this.bulletLevel = 0;}.bind(this)
     });
 
     this.enemySpawnTimer = new GameInterval({
@@ -88,11 +98,13 @@ exports = Class(GameModel, function(supr) {
   };
 
   this.playerShoot = function() {
+    var bulletType = BulletModel.LEVEL_TYPES[this.bulletLevel];
     this.bulletMVC.obtain({
       x: this.player.x,
       y: this.player.y,
-      dy: -600
-    })
+      dy: -600,
+      type: bulletType
+    });
   };
 
   this.movePlayerTo = function(x) {
@@ -118,9 +130,19 @@ exports = Class(GameModel, function(supr) {
       obstacleType = random() < 0.5 ?
         ObstacleModel.TYPES.pothole :
         ObstacleModel.TYPES.bush;
-    } 
+    }
+
+    var randoX;
+    if (obstacleType === ObstacleModel.TYPES.pothole) {
+      randoX = rollFloat(this.modelSpace.x + 120, this.modelSpace.right - 120);
+    } else if (obstacleType === ObstacleModel.TYPES.bush){
+      console.log("math??");
+    } else {
+      randoX = rollFloat(this.modelSpace.x + 100, this.modelSpace.right - 100);
+    }
+
     this.obstacleMVC.obtain({
-      x: rollFloat(this.modelSpace.x + 100, this.modelSpace.right - 100),
+      x: randoX,      
       y: this.modelSpace.y - 60,
       type: obstacleType
     });
@@ -137,6 +159,11 @@ exports = Class(GameModel, function(supr) {
 
   this.collectPowerup = function(powerupModel) {
     powerupModel.active = false;
+    console.log(BulletModel.LEVEL_TYPES.length);
+    if (this.bulletLevel < BulletModel.LEVEL_TYPES.length - 1) {
+      this.bulletLevel++; 
+    }   
+    this.poweredUp = true;
     // Do something with that powerup
     console.warn('Powerup collected, do something with it');
   };
@@ -147,7 +174,7 @@ exports = Class(GameModel, function(supr) {
     // add caap and gown
   };
 
-  this.hitObstacle = function(obstacleModel) {
+  this.hitObstacle = function(ObstacleModel) {
     this._killPlayer();
   };
 
@@ -171,6 +198,11 @@ exports = Class(GameModel, function(supr) {
 
     // step the GameIntervals
     if (!this.gameOver) {
+      if (this.poweredUp) {
+        console.log("powered up is true");
+        this.poweredUp = false;
+        this.bulletStepTimer.step(dt);
+      }
       this.enemySpawnTimer.step(dt);
       this.obstacleSpawnTimer.step(dt);
     }

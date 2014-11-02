@@ -10,19 +10,22 @@ exports = Class(EntityModel, function(supr) {
     this.gameModel = opts.gameModel;
     this.radius = opts.radius;
 
-    //this.hasHit = false;
-  };
-
-  this.reset = function(opts) {
-    supr(this, 'reset', arguments);
+    this.type = opts.type;
 
     this.hasHit = false;
   };
 
-  this.hitEnemy = function(enemyModel) {
+  this.reset = function(opts) {
+    supr(this, 'reset', arguments);
+    this.type = opts.type;
+
+    this.hasHit = false;
+  };
+
+  this.hitEnemy = function(enemyModel, amount) {
     this.hasHit = true;
     this.active = false;
-    enemyModel.hurt(1);
+    enemyModel.hurt(amount);
   };
 
   this.step = function(dt) {
@@ -31,7 +34,7 @@ exports = Class(EntityModel, function(supr) {
     // TODO: check for collision
     this.gameModel.enemyMVC.modelPool.forEachActive(function(model) {
       if (this.active && !this.hasHit && intersect.circleAndCircle(this, model)) {
-        this.hitEnemy(model);
+        this.hitEnemy(model, this.type.hurtAmt);
       }
     }.bind(this));
 
@@ -41,7 +44,6 @@ exports = Class(EntityModel, function(supr) {
           this.active = false;
         }
       }
-      
     }.bind(this));
 
     if (this.y < this.gameModel.modelSpace.y) {
@@ -49,3 +51,25 @@ exports = Class(EntityModel, function(supr) {
     }
   };
 });
+
+exports.TYPES = {
+
+  /*
+   * hurtAmt
+  */
+  pencil: {
+    image: IMAGES_DIR + "pencil_mockup_0000.png",
+    width: 13,
+    height: 74,
+    hurtAmt: 1
+  },
+
+  calculator: {
+    images: IMAGES_DIR + "calculator_mockup.png",
+    width: 52,
+    height: 76,
+    hurtAmt: 2
+  }
+}
+
+exports.LEVEL_TYPES = [exports.TYPES.pencil, exports.TYPES.calculator];

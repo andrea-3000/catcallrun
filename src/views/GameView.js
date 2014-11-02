@@ -15,6 +15,7 @@ import gfw.models.entity.EntityLivingModel as EntityLivingModel;
 
 import src.models.EnemyModel as EnemyModel;
 import src.models.BulletModel as BulletModel;
+import src.views.BulletView as BulletView;
 import src.models.ObstacleModel as ObstacleModel;
 import src.views.ObstacleView as ObstacleView;
 
@@ -36,11 +37,7 @@ exports = Class(GameView, function(supr) {
       bg: gImgs + 'street.png',
       awning: gImgs + 'awning.png',
       player: gImgs + 'girl_run_0000.png',
-      pencil: gImgs + 'pencil_mockup_0000.png',
       whiteBusiness: gImgs + 'business_mockup.png',
-      businessFlash: gImgs + 'business_flash.png',
-      obstacle_1: gImgs + 'pathole.png',
-      obstacle_2: gImgs + 'bush.png'
     }
   });
 
@@ -168,21 +165,17 @@ exports = Class(GameView, function(supr) {
         }
       },
       viewPoolOpts: {
-        ctor: ImageView,
+        ctor: BulletView,
         initOpts: {
           superview: this,
-          image: img.pencil.path,
-          width: img.pencil.w,
-          height: img.pencil.h,
-          offsetX: -img.pencil.hw,
-          offsetY: -img.pencil.hh,
-          anchorX: img.pencil.hw,
-          anchorY: img.pencil.hh
         }
       },
       initCount: 40,
       linkedFunc: function(model, view) {
         model.view = view;
+        view.reset({
+          type: model.type
+        });
       },
       updateViewFunc: function(dt, model, view) {
         var style = view.style;
@@ -365,6 +358,7 @@ exports = Class(GameView, function(supr) {
 
   this.onGameOver = function() {
     this.playerView.pause();
+    //game over screen
   };
 
   this.tick = function(dt) {

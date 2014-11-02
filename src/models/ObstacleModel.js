@@ -19,8 +19,6 @@ exports = Class(EntityModel, function(supr) {
     supr(this, 'reset', arguments);
     this.type = opts.type;
 
-    console.log(this.type.collides);
-
     this.hasHit = false;
 
     // update the collision rect
