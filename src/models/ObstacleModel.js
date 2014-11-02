@@ -18,6 +18,7 @@ exports = Class(EntityModel, function(supr) {
   this.reset = function(opts) {
     supr(this, 'reset', arguments);
     this.type = opts.type;
+    this.radius = this.type.width/2;
 
     this.hasHit = false;
 

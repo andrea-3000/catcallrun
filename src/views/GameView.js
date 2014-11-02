@@ -133,7 +133,7 @@ exports = Class(GameView, function(supr) {
         ctor: ObstacleModel,
         initOpts: {
           gameModel: gameModel,
-          radius: 20,
+          radius: 10,
         }
       },
       viewPoolOpts: {
