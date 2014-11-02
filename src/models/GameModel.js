@@ -19,6 +19,8 @@ exports = Class(GameModel, function(supr) {
   var rollInt = utils.rollInt;
   var shuffle = utils.shuffle;
 
+  var POWERUP_LENGTH = 3;
+
   this.init = function(opts) {
     supr(this, 'init', [opts]);
     this.view = null;
@@ -26,6 +28,7 @@ exports = Class(GameModel, function(supr) {
     this.gameOver = false;
     this.score = 0;
     this.redrawScore = false;
+    this.poweredUp = false;
 
     this.player = new PlayerModel({
       gameModel: this,
@@ -58,12 +61,14 @@ exports = Class(GameModel, function(supr) {
     this.modelSpace.right = this.modelSpace.x + this.modelSpace.width;
     this.modelSpace.bottom = this.modelSpace.y + this.modelSpace.height;
 
-    this.bulletLevel = 0;
+    this.bulletLevel = 1;
 
     // SIMPLE RESETS //
     this.gameOver = false;
     this.score = 0;
     this.redrawScore = true;
+    this.poweredUp = false;
+    this.powerupTimeRemaining = 0;
 
     this.playerSpawnX = this.view.style.width / 2;
     this.playerSpawnY = this.view.style.height - 65;
@@ -72,11 +77,6 @@ exports = Class(GameModel, function(supr) {
     this.player.reset({
       x: this.playerSpawnX,
       y: this.playerSpawnY,
-    });
-
-    this.bulletStepTimer = new GameInterval({ 
-      tickInterval: 1,
-      tickFunction: function() {this.bulletLevel = 0;}.bind(this)
     });
 
     this.enemySpawnTimer = new GameInterval({
@@ -142,7 +142,7 @@ exports = Class(GameModel, function(supr) {
     }
 
     this.obstacleMVC.obtain({
-      x: randoX,      
+      x: randoX,
       y: this.modelSpace.y - 60,
       type: obstacleType
     });
@@ -161,9 +161,10 @@ exports = Class(GameModel, function(supr) {
     powerupModel.active = false;
     console.log(BulletModel.LEVEL_TYPES.length);
     if (this.bulletLevel < BulletModel.LEVEL_TYPES.length - 1) {
-      this.bulletLevel++; 
-    }   
+      this.bulletLevel++;
+    }
     this.poweredUp = true;
+    this.powerupTimeRemaining = POWERUP_LENGTH;
     // Do something with that powerup
     console.warn('Powerup collected, do something with it');
   };
@@ -201,7 +202,7 @@ exports = Class(GameModel, function(supr) {
       if (this.poweredUp) {
         console.log("powered up is true");
         this.poweredUp = false;
-        this.bulletStepTimer.step(dt);
+        this.powerupTimeRemaining -= dt;
       }
       this.enemySpawnTimer.step(dt);
       this.obstacleSpawnTimer.step(dt);

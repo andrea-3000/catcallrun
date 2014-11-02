@@ -53,7 +53,6 @@ exports = Class(EntityModel, function(supr) {
 });
 
 exports.TYPES = {
-
   /*
    * hurtAmt
   */
@@ -65,10 +64,11 @@ exports.TYPES = {
   },
 
   calculator: {
-    images: IMAGES_DIR + "calculator_mockup.png",
+    image: IMAGES_DIR + "calculator_mockup.png",
     width: 52,
     height: 76,
-    hurtAmt: 2
+    hurtAmt: 2,
+    spin: true
   }
 }
 
